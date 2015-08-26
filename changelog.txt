@@ -1,0 +1,1 @@
+08/26/15-21:11:10: Added initial .gitignore file
