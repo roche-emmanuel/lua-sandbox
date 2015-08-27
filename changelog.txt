@@ -3,3 +3,4 @@
 08/27/15-17:06:51: Fixed issue #2: Installed IUP modules in sandbox.
 08/27/15-17:42:53: Added luajit binaires.
 08/27/15-18:58:48: Added test files for IM library.
+08/27/15-18:59:51: Renamed iup tests to im.
