@@ -4,3 +4,4 @@
 08/27/15-17:42:53: Added luajit binaires.
 08/27/15-18:58:48: Added test files for IM library.
 08/27/15-18:59:51: Renamed iup tests to im.
+08/27/15-20:40:22: Added binaries for luagl.
