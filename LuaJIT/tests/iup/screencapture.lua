@@ -1,4 +1,6 @@
-require"iup"
+require"imlua"
+require"cdlua"
+require"cdluaim"
 
 local canvas = cd.CreateCanvas(cd.NATIVEWINDOW, nil)
 canvas:Activate()

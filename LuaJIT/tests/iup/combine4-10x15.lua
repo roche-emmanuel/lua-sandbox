@@ -1,6 +1,8 @@
 --A script to compose 4 images
 
-require"iup"
+require"imlua"
+require"imlua_process"
+require"iuplua"
 
 
 function CombineImages(comb_image)

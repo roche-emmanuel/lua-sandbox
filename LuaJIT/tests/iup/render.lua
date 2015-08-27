@@ -1,4 +1,5 @@
-require"iup"
+require"imlua"
+require"imlua_process"
 
 local image = im.ImageCreate(500, 500, im.RGB, im.BYTE)
 

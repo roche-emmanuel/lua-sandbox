@@ -1,4 +1,9 @@
-require"iup"
+require"imlua"
+require"cdlua"
+require"cdluaim"
+require"iuplua"
+require"iupluacd"
+require"imlua_process"
 
 filename = "flower.jpg"
  --set your file

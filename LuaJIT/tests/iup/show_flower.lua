@@ -1,4 +1,8 @@
-require"iup"
+require"imlua"
+require"cdlua"
+require"cdluaim"
+require"iuplua"
+require"iupluacd"
 
 image = im.FileImageLoad("flower.jpg") -- directly load the image at index 0. it will open and close the file
 cnv = iup.canvas{rastersize = image:Width().."x"..image:Height(), border = "NO"}

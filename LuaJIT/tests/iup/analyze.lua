@@ -1,4 +1,5 @@
-require"iup"
+require"imlua"
+require"imlua_process"
 
 local filename = "rice.png" -- image must be im.GRAY and im.BYTE for this script
 

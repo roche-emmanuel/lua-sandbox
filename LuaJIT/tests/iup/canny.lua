@@ -1,4 +1,5 @@
-require"iup"
+require"imlua"
+require"imlua_process"
 
 local infilename = "lena.jpg"
 local outfilename = "sobel_lena.png"
