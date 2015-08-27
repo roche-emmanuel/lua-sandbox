@@ -1,2 +1,3 @@
 08/26/15-21:11:10: Added initial .gitignore file
 08/26/15-22:32:04: Working on issue #2: Moving LuajIT binaries into sandbox.
+08/27/15-17:06:51: Fixed issue #2: Installed IUP modules in sandbox.
