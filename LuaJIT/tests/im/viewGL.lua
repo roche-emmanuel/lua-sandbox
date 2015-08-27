@@ -54,11 +54,12 @@ function cnv:k_any(c)
   
 end
 
-if arg and arg[1] ~= nil then
-  fileName = arg[1]
-else
-  fileName = iup.GetFile("*.*")
-end
+-- if arg and arg[1] ~= nil then
+--   fileName = arg[1]
+-- else
+--   fileName = iup.GetFile("*.*")
+-- end
+fileName = "rice.png"
 
 image = im.FileImageLoadBitmap(fileName)
 if (not image) then
