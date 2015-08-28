@@ -7,3 +7,4 @@
 08/27/15-20:40:22: Added binaries for luagl.
 08/27/15-21:00:24: Fixed issue #4: Added tests for IUP modules.
 08/27/15-22:14:23: Added Lua sandbox.
+08/28/15-18:32:15: Added binary for lfs module.
