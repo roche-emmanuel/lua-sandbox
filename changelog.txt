@@ -9,3 +9,4 @@
 08/27/15-22:14:23: Added Lua sandbox.
 08/28/15-18:32:15: Added binary for lfs module.
 08/28/15-20:48:53: Added binaries and lua files for luasocket in LuaJIT sandbox.
+09/05/15-09:47:30: Updated access rights.
