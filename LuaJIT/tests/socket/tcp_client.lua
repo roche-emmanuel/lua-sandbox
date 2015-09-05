@@ -4,7 +4,7 @@ local socket = require "socket"
 
 local client = socket.tcp();
 
-local res, msg = client:connect("localhost", 10001)
+local res, msg = client:connect("localhost", 22222)
 if res~=1 then
   print ("Error:",msg)
   return

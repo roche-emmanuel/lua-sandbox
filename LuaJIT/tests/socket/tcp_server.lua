@@ -2,11 +2,15 @@ print("Hello from test app!")
 
 local socket = require "socket"
 
+print("Creating server")
+
 -- create a tcp socket:
 local tcp_server, err = socket.tcp();
 if tcp_server==nil then 
 	return nil, err; 
 end
+
+print("Binding server")
 
 local port = 22222
 tcp_server:setoption("reuseaddr", true);
@@ -14,6 +18,8 @@ local res, err = tcp_server:bind("*", port);
 if res==nil then
 	return nil, err;
 end
+
+print("Entering server listen")
 
 res, err = tcp_server:listen();
 if res==nil then 
@@ -23,15 +29,17 @@ end
 local stop_server = 0
 local g_client_msg
 
-local client = socket.tcp();
-local res, msg = client:connect("localhost", port)
-if res~=1 then
-  print ("Error:",msg)
-  return
-end
+-- local client = socket.tcp();
+-- local res, msg = client:connect("localhost", port)
+-- if res~=1 then
+--   print ("Error:",msg)
+--   return
+-- end
 
-client:settimeout(0.01) 
-client:send("Hello world\n")
+-- client:settimeout(0.01) 
+-- client:send("Hello world\n")
+
+print("Entering server loop")
 
 while( stop_server==0 ) do
   local err = "";
@@ -40,7 +48,7 @@ while( stop_server==0 ) do
   -- Set a timeout of 10 ms for accept().
   tcp_client, err = tcp_server:accept();
 
-  -- print("Checking TCP client.")
+  print("Checking TCP client.")
 
   if tcp_client~=nil then
 	  tcp_client:settimeout(10);
