@@ -20,22 +20,30 @@ local zmq = {}
 
 local context = nil
 
+local close_context = function(c)
+	print("Closing context object.")
+	local res = lib.zmq_ctx_term(c);
+	if res ~= 0 then
+		error("Error in zmq_ctx_term(): error: ".. lib.zmq_errno());
+	end
+end
+
 zmq.init = function()
 	if context == nil then
 		print("Initializing ZMQ context.")
 		context = lib.zmq_ctx_new();
 		if context==nil then
 			error("Error in zmq_ctx_new(): error: ".. lib.zmq_errno());
+		else
+			ffi.gc(context,close_context)	
 		end
 	end
 end
 
 zmq.uninit = function()
 	if context ~= nil then
-		local res = lib.zmq_ctx_term(context);
-		if res ~= 0 then
-			error("Error in zmq_ctx_term(): error: ".. lib.zmq_errno());
-		end
+		ffi.gc(context,nil)
+		close_context(context)
 		context = nil
 	end
 end
@@ -60,10 +68,6 @@ local close_socket = function(s)
 	if lib.zmq_close(s) ~= 0 then
 		error("Error in zmq_close(): error: ".. lib.zmq_errno())
 	end
-end
-
-function Socket:__gc()
-	print("Calling table finalizer")
 end
 
 function Socket:close()

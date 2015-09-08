@@ -12,3 +12,4 @@
 09/05/15-09:47:30: Updated access rights.
 09/05/15-10:48:23: Added initial working implementation for test socket server/client.
 09/07/15-22:54:58: Adding support for zmq bindings in lua: implemented context class and initial socket class.
+09/08/15-18:07:05: Added support to close ZMQ context with finalizer.
