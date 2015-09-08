@@ -10,11 +10,42 @@ void *zmq_socket (void *, int type);
 int zmq_close (void *s);
 int zmq_bind (void *s, const char *addr);
 int zmq_connect (void *s, const char *addr);
+
+typedef struct zmq_msg_t {unsigned char _ [64];} zmq_msg_t;
+
+int zmq_msg_init (zmq_msg_t *msg);
+int zmq_msg_init_size (zmq_msg_t *msg, size_t size);
+int zmq_msg_send (zmq_msg_t *msg, void *s, int flags);
+int zmq_msg_recv (zmq_msg_t *msg, void *s, int flags);
+int zmq_msg_close (zmq_msg_t *msg);
+void *zmq_msg_data (zmq_msg_t *msg);
+size_t zmq_msg_size (zmq_msg_t *msg);
 ]]
 
 local lib = ffi.load("libzmq")
 
 local zmq = {}
+
+-- definitions:
+zmq.PAIR 		= 0
+zmq.PUB 		= 1
+zmq.SUB 		= 2
+zmq.REQ 		= 3
+zmq.REP 		= 4
+zmq.DEALER 	= 5
+zmq.ROUTER 	= 6
+zmq.PULL 		= 7
+zmq.PUSH 		= 8
+zmq.XPUB 		= 9
+zmq.XSUB 		= 10
+zmq.STREAM 	= 11
+
+--  Send/recv options.
+zmq.DONTWAIT	= 1
+zmq.SNDMORE		= 2
+
+-- error codes:
+zmq.EAGAIN = 11
 
 -- Context handling:
 
@@ -55,6 +86,7 @@ function Socket:new(stype)
 	
 	local o = {}
 	o._s = nil;
+	o._msg = ffi.new("zmq_msg_t[1]");
 
   setmetatable(o, self)
   self.__index = self
@@ -98,12 +130,66 @@ function Socket:bind(endpoint)
 	end
 end
 
--- function Socket:connect(endpoint)
--- 	assert(self._s)
--- 	if lib.zmq_bind(self._s,endpoint) ~= 0 then
--- 		error("Error in zmq_bind(): error: ".. lib.zmq_errno())
--- 	end
--- end
+function Socket:connect(endpoint)
+	assert(self._s)
+	if lib.zmq_connect(self._s,endpoint) ~= 0 then
+		error("Error in zmq_connect(): error: ".. lib.zmq_errno())
+	end
+end
+
+function Socket:send(msg)
+	assert(self._s)
+
+	local len = #msg
+	if len==0 then
+		return --nothing to send.
+	end
+
+	if lib.zmq_msg_init_size(self._msg,len) ~= 0 then
+		error("Error in zmq_msg_init_size(): error: ".. lib.zmq_errno())
+	end
+
+	ffi.copy(lib.zmq_msg_data(self._msg), msg, len);
+
+	if lib.zmq_msg_send(self._msg,self._s,zmq.DONTWAIT) ~= len then
+		error("Error in zmq_msg_send(): error: ".. lib.zmq_errno())
+	end
+
+	if lib.zmq_msg_close(self._msg) ~= 0 then
+		error("Error in zmq_msg_close(): error: ".. lib.zmq_errno())
+	end
+end
+
+function Socket:receive()
+	assert(self._s)
+
+	if lib.zmq_msg_init(self._msg) ~= 0 then
+		error("Error in zmq_msg_init(): error: ".. lib.zmq_errno())
+	end
+
+  local len = lib.zmq_msg_recv(self._msg,self._s,zmq.DONTWAIT)
+  if len<0 then
+    local err = lib.zmq_errno();
+    if err ~= zmq.EAGAIN then
+      error("Error in zmq_msg_recv(): error: " .. err);
+    end
+  elseif len==0 then
+    error("Error in zmq_msg_recv(): received a message with length 0.");
+  end
+
+  local msg = nil
+
+  if len>0 then
+  	msg = ffi.string(lib.zmq_msg_data(self._msg),len);
+  end
+
+	if lib.zmq_msg_close(self._msg) ~= 0 then
+		error("Error in zmq_msg_close(): error: ".. lib.zmq_errno())
+	end
+
+	return msg
+end
+
 
 -- method used to create a socket:
 zmq.socket = function(stype)
