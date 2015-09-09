@@ -14,3 +14,4 @@
 09/07/15-22:54:58: Adding support for zmq bindings in lua: implemented context class and initial socket class.
 09/08/15-18:07:05: Added support to close ZMQ context with finalizer.
 09/08/15-20:39:57: Added proper implementation for zmq socket send/receive methods.
+09/09/15-11:07:26: Added minimal IUP interface for zmq tests.
